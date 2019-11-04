@@ -1,0 +1,1 @@
+export {getCompleteQuery} from './base-builder'
