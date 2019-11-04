@@ -1,0 +1,37 @@
+{
+  "name": "query-builder-on-prem",
+  "version": "0.0.1",
+  "author": "Pep On Prem Team",
+  "repository": {
+    "type": "git",
+    "url": "https://git-codecommit.ap-south-1.amazonaws.com/v1/repos/query-builder-on-prem"
+  },
+  "description": "query builder for on-prem",
+  "scripts": {
+    "prepare": "gulp",
+    "start": "node ./out/www.js",
+    "test": "mocha ./tests/out/test.js",
+    "compile": "node ./node_modules/typescript/bin/tsc -p ./src",
+    "compiletests": "node ./node_modules/typescript/bin/tsc -p ./tests"
+  },
+  "dependencies": {
+    "moment": "^2.13.0",
+    "moment-timezone": "^0.5.4",
+    "typings": "^2.1.1",
+    "body-parser": "^1.18.2",
+    "cookie-parser": "~1.4.3",
+    "express": "~4.16.2",
+    "knex": "0.15.2",
+    "@types/node": "^10.12.21"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-install": "^1.1.0",
+    "typescript": "^2.9.2",
+    "browser-sync": "^2.18.8",
+    "gulp-typescript": "5.0.1",
+    "merge2": "1.3.0",
+    "del": "5.1.0"
+  },
+  "license": "ISC"
+}
