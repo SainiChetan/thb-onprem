@@ -1,6 +1,7 @@
 
-
+import { getQueryForParameters } from './querybuilder';
 import express = require('express');
+
 
 let router = (express as any).Router();
 
@@ -9,10 +10,6 @@ const asyncMiddleware = fn => (req, res, next) => {
         .catch(next);
 };
 
-const test = async (req, res, next) => {
-    res.send(' test CHECK RUNNING ');
-}
-
-router.get('/', asyncMiddleware(test));
+router.get('/queryresult', asyncMiddleware(getQueryForParameters));
 
 export = router;

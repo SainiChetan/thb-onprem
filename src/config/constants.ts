@@ -42,12 +42,12 @@ export let constants = {
     // server_list_dynamo_table: "server_list",
     // dryRunDatabase: "dryruns",
     // sms_camp_sch_notification_const: "SMS-CAMPAIGN-SCH",
-    // live_comm_database: function () {
-    //     if (process.env.NODE_ENV != "production") {
-    //         return 'liverun_beta';
-    //     }
-    //     return 'liverun'
-    // },
+    live_comm_database: function () {
+        if (process.env.NODE_ENV != "production") {
+            return 'liverun_beta';
+        }
+        return 'liverun'
+    },
     // getFeedRepairLambda: function () {
     //     if (process.env.NODE_ENV != 'production') {
     //         return 'athena-layer-dev-feedRepairHandler';
@@ -136,7 +136,12 @@ export let constants = {
             return "pep_events_dev";
         }
         return "pep_events_prod";
-
+    },
+    getEventsDBCorrespondingToEnv : function () {
+        if (process.env.NODE_ENV != 'production') {
+            return "pep_events_dev";
+        }
+        return "pep_events_prod";
     }
 
 

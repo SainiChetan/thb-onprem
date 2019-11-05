@@ -19,7 +19,7 @@ where
 NOT(createddate >= timestamp '2018-12-15')`
 
 
-export async function getQueryForConnect(condtions: ICommConditions, dbname):
+export async function getQueryForConnect(condtions: ICommConditions, dbname: String):
     Promise<IQueryBuilderResponse> {
     let baseQuery = '';
     let responseObject: IQueryBuilderResponse = {
@@ -76,13 +76,13 @@ function getAdequatePartitionsForQuery(): {
     return { yearPartions: quotedyearPartitions, monthParitions: quotedmonthPartitions }
 }
 
-async function getQueryForNormalCondition(normalConditions: ICommCondition[], dbName):
+async function getQueryForNormalCondition(normalConditions: ICommCondition[], dbName: String):
     Promise<
-    {
-        "query": string,
-        "exclusionBlock": boolean,
-        "inclusionBlock": boolean
-    }> {
+        {
+            "query": string,
+            "exclusionBlock": boolean,
+            "inclusionBlock": boolean
+        }> {
     let response = { "query": "", "exclusionBlock": false, "inclusionBlock": false };
     let includeWhereBlock = '';
     let exceptWhereBlock = '';
@@ -139,61 +139,6 @@ async function getQueryForNormalCondition(normalConditions: ICommCondition[], db
     response.query = baseQuery;
     console.log("response==============>>>", response.inclusionBlock, response.exclusionBlock);
     return response;
-}
-
-
-
-async function getQueryForNormalConditionNew(normalConditions: ICommCondition[], dbName) {
-
-    let includeCompleteBaseQuery = `select distinct patientid from "${constants.live_comm_database()}"."${connect_table}"
-    where labname = '${dbName}'`;
-    let excludeCompleteBaseQuery = '';
-    let excludeCounter = 0;
-    let includeCounter = 0;
-    for (var counter in normalConditions) {
-        let condition = normalConditions[counter];
-
-        let currentWhereClauseQuery = await getWhereConditionBasedOnFactorNew(condition, dbName);
-        if (condition.scope == 'include') {
-            let u_i_cond = (condition.dbCond == 'AND') ? ' INTERSECT' : ' UNION';
-            if (includeCounter == 0) {
-                u_i_cond = ' INTERSECT'
-            }
-            // includeCompleteBaseQuery += ` ${u_i_cond} select distinct patientid from ${billing_items_table} 
-            // where labname = '${dbName}' ${currentWhereClause}`;
-            includeCompleteBaseQuery += ` ${u_i_cond} ${currentWhereClauseQuery}`;
-            includeCounter++;
-        }
-        else if (condition.scope == 'exclude') {
-            let u_i_cond = (condition.dbCond == 'AND') ? ' INTERSECT' : ' UNION';
-            if (excludeCounter == 0) {
-                u_i_cond = ''
-            }
-            // excludeCompleteBaseQuery += ` ${u_i_cond} select distinct patientid from ${billing_items_table} 
-            // where labname = '${dbName}' ${currentWhereClause}`;
-            excludeCompleteBaseQuery += ` ${u_i_cond} ${currentWhereClauseQuery}`;
-            excludeCounter++;
-        }
-    }
-
-    let exceptClause = '';
-    if (excludeCounter > 0) {
-        exceptClause = `EXCEPT 
-        (
-        ${excludeCompleteBaseQuery}
-        )`
-    }
-
-    let normalQuery = `${normalConditionViewAlias} AS (
-     (
-         ${includeCompleteBaseQuery}
-     )
-     ${exceptClause}
-
-    )`
-
-    return normalQuery;
-
 }
 
 

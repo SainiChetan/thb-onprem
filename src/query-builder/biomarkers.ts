@@ -2,7 +2,7 @@ import {
     IBiomarkerModuleConditions, IBiomarkerCondition,
     IBioNumericInterface, IBioTextInterface,
     IQueryBuilderResponse
-} from "../interface";
+} from "../interface/index";
 import { constants } from '../config/constants'
 
 let normalConditionViewAlias = 'bio_t1';

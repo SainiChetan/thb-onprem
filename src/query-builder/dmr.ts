@@ -192,8 +192,8 @@ function getWhereClauseForMultiselectComponent(valueArray: string[], factor: str
 }
 
 
-function getFilterConditionBasedOnCampaign(campaignArray: string[] | undefined,
-    eventsArray: string[], campaignType: string, dbName: string) {
+function getFilterConditionBasedOnCampaign(campaignArray,
+    eventsArray, campaignType, dbName) {
 
     let componentQuery = '';
     let campaignSegment = '';

@@ -142,7 +142,7 @@ function getWhereConditionBasedOnFactor(condition: IPatientCondition) {
 }
 
 
-function getQueryForEverVisitedCenter(valueArray: string[]) {
+function getQueryForEverVisitedCenter(valueArray) {
 
     let centerQuery = '';
     //console.log(valueArray.toString());
@@ -158,7 +158,7 @@ function getQueryForEverVisitedCenter(valueArray: string[]) {
 }
 
 
-function getQueryForLastVisitedChannel(valueArray: string[]) {
+function getQueryForLastVisitedChannel(valueArray) {
 
     let channelQuery = '';
     for (var counter in valueArray) {

@@ -2,6 +2,8 @@
     "compilerOptions": {
         "target": "ES6",
         "removeComments": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
         "noImplicitAny": false,
         "preserveConstEnums": true,
         "sourceMap": true,
@@ -9,14 +11,26 @@
         "module": "commonjs",
         "outDir": "dist",
         "typeRoots": [
-            "./node_modules/@types"
-        ]
+            "./node_modules/@types/"
+        ],
+        "strict": false
+        //"target": "ES5",
+        // "sourceMap": true,
+        // "typeRoots": [
+        //     "node_modules/@types/"
+        // ],
+        // "noUnusedLocals": true,
+        // "noUnusedParameters": true,
+        // "declaration": false,
+        // "watch": true
     },
-    "filesGlob": [
-        "./modules/**/*.ts"
+    "compileOnSave": true,
+    "include": [
+        "src/**/*"
     ],
     "exclude": [
+        ".vscode",
         "node_modules",
-        "bower_components"
+        "dist"
     ]
 }

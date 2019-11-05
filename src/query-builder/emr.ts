@@ -249,7 +249,7 @@ function getStatementForCondition(items: string[], cond, date, date1, date2, sco
 }
 
 
-async function getWhereClauseExtensionForConditionNew(condition: IEmrCondition, counter: number, labName : string) {
+async function getWhereClauseExtensionForConditionNew(condition, counter: number, labName : string) {
     let bioMarkersWhereConditions = '';
     //let OR_AND_OP = counter == 0 ? 'AND' : condition.dbCond;
     let OR_AND_OP = 'AND';

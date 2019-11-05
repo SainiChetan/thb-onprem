@@ -7,7 +7,7 @@ import { constants } from '../config/constants';
 let patient_leads_info_table = constants.getpatientLeadsTableCorrespondingToEnv();//"sync_clean_leads";
 
 
-export async function getQueryForPatientLeads(condtions: IPatientLeadsModuleConditions, dbname):
+export async function getQueryForPatientLeads(condtions, dbname):
     Promise<IQueryBuilderResponse> {
     let baseQuery = '';
     let responseObject: IQueryBuilderResponse = {
@@ -68,7 +68,7 @@ async function getQueryForNormalCondition(normalConditions: IPatientLeadConditio
     return baseQuery;
 }
 
-function getWhereConditionBasedOnFactor(condition: IPatientLeadCondition,dbName: string) {
+function getWhereConditionBasedOnFactor(condition,dbName: string) {
     let whereClause = '';
     let includeExcludeMarker = ''; //condition.scope == 'exclude' ? 'NOT' : '';
     if(condition.factor=="gender" && condition.value){

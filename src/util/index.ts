@@ -1,4 +1,4 @@
-import { IResponse, IResponseBody } from './../interface/';
+import { IResponse, IResponseBody } from './../interface/index';
 //import { timeUtils } from '@thblib/thb-util';
 import { constants } from './../config/constants';
 
@@ -7,8 +7,6 @@ const AWS = require('aws-sdk');
 AWS.config.update({ region: 'ap-south-1' });
 const sns = new AWS.SNS({ apiVersion: '2010-03-31' });
 const docClient = new AWS.DynamoDB.DocumentClient();
-
-import { encrypt } from '../encypt_decrypt';
 
 
 export function responseObj(): IResponse {
@@ -72,28 +70,9 @@ export function createResponse(statusCode: number, status: number, result: any, 
     response.body.status = status || response.body.status;
     response.body.result = result || response.body.result;
     //if (process.env.NODE_ENV != 'production') {
-        response.body.result = encrypt(JSON.stringify(result)) || response.body.result;
-        response.body.iscomp = true;
+        //response.body.result = encrypt(JSON.stringify(result)) || response.body.result;
+        //response.body.iscomp = true;
     //}
-    response.body.message = message || response.body.message;
-    response.body = JSON.stringify(response.body);
-    // response.body=response.body.replace(/\\n/g, "\\n")
-    // .replace(/\\'/g, "\\'")
-    // .replace(/\\"/g, '\\"')
-    // .replace(/\\&/g, "\\&")
-    // .replace(/\\r/g, "\\r")
-    // .replace(/\\t/g, "\\t")
-    // .replace(/\\b/g, "\\b")
-    // .replace(/\\f/g, "\\f");
-    return response;
-
-};
-
-export function createCompressedResponse(statusCode: number, status: number, result: any, message: string) {
-    let response = responseObj();
-    response.statusCode = statusCode || response.statusCode;
-    response.body.status = status || response.body.status;
-    response.body.result = encrypt(JSON.stringify(result)) || response.body.result;
     response.body.message = message || response.body.message;
     response.body = JSON.stringify(response.body);
     // response.body=response.body.replace(/\\n/g, "\\n")
@@ -249,62 +228,4 @@ export function getBucketName() {
 }
 
 
-export async function checkIfEngagementEnabledForLab(servername, commtype) {
-
-    let labSettingCommRes = await getLabSetting(servername, "comm");
-    if (labSettingCommRes.err || !labSettingCommRes.result) {
-        return {
-            err: labSettingCommRes.err || ' ENTRY NOT PRESENT IN DYNAMO DB ',
-            result: null
-        };
-    }
-
-    let labSettingRes = await getLabSetting(servername, commtype);
-
-    if (labSettingRes.err || !labSettingRes.result) {
-        return {
-            err: labSettingRes.err || ' ENTRY NOT PRESENT IN DYNAMO DB ',
-            result: null
-        };
-    }
-
-    let labSettings = labSettingRes.result['lab_data'];
-    let labSettingsComm = labSettingCommRes.result['lab_data'];
-    if ((labSettings.isDisable || labSettingsComm.isDisable)) {
-        return false;
-    }
-    return true;
-}
-
-export async function getLabSetting(labname, appname) {
-
-    var params = {
-
-        TableName: constants.labSettingsTable(),
-        Key: {
-            "labname": labname,
-            "appname": appname
-        }
-    };
-
-    try {
-        const data = await docClient.get(params).promise();
-        let item = data.Item ? data.Item : null;
-
-        console.log(JSON.stringify(data));
-        return {
-            err: null,
-            result: item
-        }
-
-    } catch (err) {
-
-        console.log(err);
-        console.log(err.stack);
-        return {
-            err: err,
-            result: null
-        }
-    }
-}
 

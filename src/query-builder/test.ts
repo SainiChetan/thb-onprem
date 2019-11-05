@@ -89,13 +89,13 @@ let condObj = {
     "compcondition": "AND"
 }
 }
-async function testFunc(){
-  await getCompleteQuery(condObj);
-  console.log("done");
+// async function testFunc(){
+//   await getCompleteQuery(condObj);
+//   console.log("done");
 
-}
+// }
 
-testFunc()
+// testFunc()
 
 // async function delaytest(){
 //     for(var i=0;i<5;i++){
