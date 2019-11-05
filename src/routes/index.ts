@@ -10,6 +10,6 @@ const asyncMiddleware = fn => (req, res, next) => {
         .catch(next);
 };
 
-router.get('/queryresult', asyncMiddleware(getQueryForParameters));
+router.post('/queryresult', asyncMiddleware(getQueryForParameters));
 
 export = router;

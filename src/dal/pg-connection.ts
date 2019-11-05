@@ -1,14 +1,15 @@
 let knexPool = {};
+//var pg = require('knex')({client: 'pg'});
 
 
 export function getKnexConnection(dbName) {
-    if (knexPool[dbName])
-        return knexPool[dbName];
-    return createKnexConnection(dbName);
+    if (knexPool["sunshine"])
+        return knexPool["sunshine"];
+    return createKnexConnection("sunshine");
 };
 
 export function createKnexConnection(dbName) {
-    knexPool[dbName] = require('knex')({
+    knexPool["sunshine"] = require('knex')({
         client: 'pg',
         connection: {
             host: "13.127.228.23",//process.env.POSTGRES_SERVERNAME,
@@ -22,17 +23,16 @@ export function createKnexConnection(dbName) {
         },
         acquireConnectionTimeout: 60000
     });
-    return knexPool[dbName];
+    return knexPool["sunshine"];
 };
 
 
 
 export async function executeQuery(dbName, query) {
     let knex = getKnexConnection(dbName);
+    console.log(query);
     return await knex.transaction(async (trx) => {
         try {
-            //let queryArr = getQueriesForIntraRulesMovement(rulesArray);
-            //let query = queryArr.join(';');
             let res = await knex.raw(query).transacting(trx);
             await trx.commit();
 
@@ -43,8 +43,8 @@ export async function executeQuery(dbName, query) {
                 result: null
             };
         }
-    }).then(async function (result) {
-        console.log(result);
+    }).then(async function (err, result) {
+        console.log(err, result);
         return {
             error: result ? result.error : null,
             result: result ? result.result : null

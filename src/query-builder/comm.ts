@@ -11,7 +11,7 @@ let patient_leads_info_table = "sync_clean_leads";
 
 let query = `select count(DISTINCT(patientremoteid)) from
 (
-select patientremoteid,createddate from "poc"."comm_connect_sms_logs"
+select patientremoteid,createddate from "poc".comm_connect_sms_logs
 where dbname = 'suburbandb2' and 
 month IN('11','12') and year IN('2018','2019')
 )
@@ -102,13 +102,13 @@ async function getQueryForNormalCondition(normalConditions: ICommCondition[], db
     let baseQuery = `connect_t1 as (
             select b.remoteid as patientid, a.dispatchdate, a.createddate  from ( 
             (
-            select patientid ,dispatchdate,createddate,mobile from "${constants.live_comm_database()}"."${connect_table}" where 
+            select patientid ,dispatchdate,createddate,mobile from "${constants.live_comm_database()}".${connect_table} where 
             labname = '${dbName}' and 
             month IN(${partitionsMap.monthParitions}) and year IN(${partitionsMap.yearPartions})
             ) a
             INNER JOIN 
             ( 
-            select mobile,remoteid from "${constants.database()}"."patients_pii"
+            select mobile,remoteid from "${constants.database()}".patients_pii
             where labname = '${dbName}'
             ) b
             on 
@@ -186,7 +186,7 @@ function getWhereConditionBasedOnFactorNew(condition: ICommCondition, dbName: st
             break;
 
     }
-    let currentWherCluaseQuery = `select distinct patientid from "${constants.live_comm_database()}"."${connect_table}"
+    let currentWherCluaseQuery = `select distinct patientid from "${constants.live_comm_database()}".${connect_table}
     where labname = '${dbName}' ${whereClause}`;
     return currentWherCluaseQuery;
 
@@ -242,11 +242,11 @@ export async function getQueryBasedOnMessage(msgCondition: IMessageInterface | u
                     p1.name,
                     mobile,p1.email,
                     current_date as camdate,p1.labname,${msgQuery},
-                    concat(mobile,'_',cast(to_unixtime(now()) as varchar(20)),'_','PL') as uniqueid,
+                    concat(mobile,'_',cast(now() as varchar(20)),'_','PL') as uniqueid,
                     is_valid_mobile as hasvalidmobile,
                     is_valid_email as hasvalidemail,
                     '${campaignName}' as campaignname 
-                    FROM "${constants.patientLeadsDatabase}"."${constants.getpatientLeadsTableCorrespondingToEnv()}" as p1
+                    FROM "${constants.patientLeadsDatabase}".${constants.getpatientLeadsTableCorrespondingToEnv()} as p1
                     WHERE labname = '${dbName}'
                     GROUP BY 
                     -- 1,2,3,4,5,6,7,8
@@ -262,11 +262,11 @@ export async function getQueryBasedOnMessage(msgCondition: IMessageInterface | u
                     p1.name,
                     mobile,p1.email,
                     current_date as camdate,p1.labname,'',
-                    concat(mobile,'_',cast(to_unixtime(now()) as varchar(20)),'_','PL') as uniqueid,
+                    concat(mobile,'_',cast(now() as varchar(20)),'_','PL') as uniqueid,
                     is_valid_mobile as hasvalidmobile,
                     is_valid_email as hasvalidemail,
                     '${campaignName}' as campaignname 
-                    FROM "${constants.patientLeadsDatabase}"."${constants.getpatientLeadsTableCorrespondingToEnv()}" as p1
+                    FROM "${constants.patientLeadsDatabase}".${constants.getpatientLeadsTableCorrespondingToEnv()} as p1
                     WHERE labname = '${dbName}'
                     GROUP BY 
                     -- 1,2,3,4,5,6,7,8
@@ -285,11 +285,11 @@ export async function getQueryBasedOnMessage(msgCondition: IMessageInterface | u
                     p1.name,
                     mobile,p1.email,
                     current_date as camdate,p1.labname,${msgQuery},
-                    concat(mobile,'_',cast(to_unixtime(now()) as varchar(20)),'_','DMR') as uniqueid,
+                    concat(mobile,'_',cast(now() as varchar(20)),'_','DMR') as uniqueid,
                     hasvalidmobile,
                     hasvalidemail,
                     '${campaignName}' as campaignname 
-                    FROM "${constants.getdmrDBCorrespondingToEnv()}"."${constants.getdmrTableCorrespondingToEnv()}" as p1
+                    FROM "${constants.getdmrDBCorrespondingToEnv()}".${constants.getdmrTableCorrespondingToEnv()} as p1
                     WHERE labname = '${dbName}'
                     GROUP BY 
                     -- 1,2,3,4,5,6,7,8
@@ -305,11 +305,11 @@ export async function getQueryBasedOnMessage(msgCondition: IMessageInterface | u
                     p1.name,
                     mobile,p1.email,
                     current_date as camdate,p1.labname,'',
-                    concat(mobile,'_',cast(to_unixtime(now()) as varchar(20)),'_','DMR') as uniqueid,
+                    concat(mobile,'_',cast(now() as varchar(20)),'_','DMR') as uniqueid,
                     hasvalidmobile,
                     hasvalidemail,
                     '${campaignName}' as campaignname 
-                    FROM "${constants.getdmrDBCorrespondingToEnv()}"."${constants.getdmrTableCorrespondingToEnv()}" as p1
+                    FROM "${constants.getdmrDBCorrespondingToEnv()}".${constants.getdmrTableCorrespondingToEnv()} as p1
                     WHERE labname = '${dbName}'
                     GROUP BY 
                     -- 1,2,3,4,5,6,7,8
@@ -326,18 +326,18 @@ export async function getQueryBasedOnMessage(msgCondition: IMessageInterface | u
                 mobile,email,
             current_date as camdate,labname,
             ${msgQuery},
-            concat(mobile,'_',cast(to_unixtime(now()) as varchar(20)),'_','PC') as uniqueid,
+            concat(mobile,'_',cast(now() as varchar(20)),'_','PC') as uniqueid,
             '${campaignName}' as campaignname,
             hasvalidmobile, hasvalidemail
-            FROM "${constants.database()}"."${patients_pii_table}" where labname = '${dbName}' and (deceased IS NULL or deceased = false)) as b`;
+            FROM "${constants.database()}".${patients_pii_table} where labname = '${dbName}' and (deceased IS NULL or deceased = false)) as b`;
         } else {
             finalViewCondition = `(SELECT remoteid as mid,patientid as labpatientid,centreid,channel,bookingid,name,
                 mobile,email,
             current_date as camdate,labname,'',
-            concat(mobile,'_',cast(to_unixtime(now()) as varchar(20)),'_','PC') as uniqueid,
+            concat(mobile,'_',cast(now() as varchar(20)),'_','PC') as uniqueid,
             '${campaignName}' as campaignname,
             hasvalidmobile, hasvalidemail
-            FROM "${constants.database()}"."${patients_pii_table}" where labname = '${dbName}' and (deceased IS NULL or deceased = false)) as b`;
+            FROM "${constants.database()}".${patients_pii_table} where labname = '${dbName}' and (deceased IS NULL or deceased = false)) as b`;
         }
     }
 

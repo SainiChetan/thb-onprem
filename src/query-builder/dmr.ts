@@ -49,7 +49,7 @@ async function getQueryForNormalCondition(normalConditions: IDMRCondition[], dbN
         exceptClause = `
             EXCEPT
             SELECT remoteid as patientid 
-            FROM "${constants.getdmrDBCorrespondingToEnv()}"."${constants.getdmrTableCorrespondingToEnv()}" 
+            FROM "${constants.getdmrDBCorrespondingToEnv()}".${constants.getdmrTableCorrespondingToEnv()} 
             WHERE 
                 labname = '${dbName}' 
                 ${exclusionWhereConditions}
@@ -58,7 +58,7 @@ async function getQueryForNormalCondition(normalConditions: IDMRCondition[], dbN
     let baseQuery = `
         ${normalConditionViewAlias} as (
                 SELECT remoteid as patientid 
-                FROM "${constants.getdmrDBCorrespondingToEnv()}"."${constants.getdmrTableCorrespondingToEnv()}"
+                FROM "${constants.getdmrDBCorrespondingToEnv()}".${constants.getdmrTableCorrespondingToEnv()}
                 WHERE 
                     labname = '${dbName}' 
                     ${inclusionWhereCondition}

@@ -8,7 +8,7 @@ import { constants } from '../config/constants'
 
 //INITIALLY IT WAS biomarker_text
 let billing_items_table = function () {
-    return `"${constants.database()}"."billing_items_cta"`;
+    return `"${constants.database()}".billing_items_cta`;
 };
 
 export async function getQueryForBilling(condtions: IBillingModuleConditions, dbname):

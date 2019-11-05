@@ -8,7 +8,7 @@ import { constants } from '../config/constants'
 
 //INITIALLY IT WAS biomarker_text
 let emr_table = function () {
-    return `"${constants.database()}"."emr"`;
+    return `"${constants.database()}".emr`;
 };
 
 export async function getQueryForEmr(condtions: IEmrModuleConditions, dbname):

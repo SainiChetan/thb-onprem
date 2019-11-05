@@ -11,11 +11,11 @@ let textConditionViewAlias = 'bio_text';
 let latestTextConditionViewAlias = 'bio_l_text';
 
 let bioMarkerTable = function () {
-    return `"${constants.database()}"."biomarkers_cta"`;
+    return `"${constants.database()}".biomarkers_cta`;
 };
 //INITIALLY IT WAS biomarker_text
 let bioMarkerTextTable = function () {
-    return `"${constants.database()}"."biomarkers_text_cta"`;
+    return `"${constants.database()}".biomarkers_text_cta`;
 };
 
 

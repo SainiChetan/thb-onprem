@@ -49,7 +49,7 @@ async function getQueryForNormalCondition(normalConditions: IPatientLeadConditio
         exceptClause = `
             EXCEPT
             SELECT patientid 
-            FROM "${constants.patientLeadsDatabase}"."${constants.getpatientLeadsTableCorrespondingToEnv()}" 
+            FROM "${constants.patientLeadsDatabase}".${constants.getpatientLeadsTableCorrespondingToEnv()} 
             WHERE 
                 labname = '${dbName}' 
                 ${exclusionWhereConditions}
@@ -58,7 +58,7 @@ async function getQueryForNormalCondition(normalConditions: IPatientLeadConditio
     let baseQuery = `
         ${normalConditionViewAlias} as (
                 SELECT patientid 
-                FROM "${constants.patientLeadsDatabase}"."${constants.getpatientLeadsTableCorrespondingToEnv()}"
+                FROM "${constants.patientLeadsDatabase}".${constants.getpatientLeadsTableCorrespondingToEnv()}
                 WHERE 
                     labname = '${dbName}' 
                     ${inclusionWhereCondition}

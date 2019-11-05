@@ -3,10 +3,6 @@ import { IResponse, IResponseBody } from './../interface/index';
 import { constants } from './../config/constants';
 
 const moment = require('moment');
-const AWS = require('aws-sdk');
-AWS.config.update({ region: 'ap-south-1' });
-const sns = new AWS.SNS({ apiVersion: '2010-03-31' });
-const docClient = new AWS.DynamoDB.DocumentClient();
 
 
 export function responseObj(): IResponse {
@@ -141,11 +137,6 @@ export async function sendErrorEmail(errorMessage, subject) {
         TopicArn: 'arn:aws:sns:ap-south-1:983637169828:athena_layer_error'
     };
 
-    try {
-        await sns.publish(params).promise();
-    } catch (e) {
-        console.log(e);
-    }
     return;
 }
 
