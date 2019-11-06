@@ -21,7 +21,7 @@
     "body-parser": "^1.18.2",
     "cookie-parser": "~1.4.3",
     "express": "~4.16.2",
-    "knex": "0.15.2",
+    "knex": "0.19.5",
     "@types/node": "^10.12.21",
     "pg": "7.12.1"
   },
